@@ -1,4 +1,4 @@
-package com.cloud.cloudstorage.model;
+package com.cloud.cloudstorage.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "Files")
-public class File {
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,5 @@ public class File {
 
     @JsonIgnore
     @OneToOne
-    private User user;
+    private UserEntity userEntity;
 }
