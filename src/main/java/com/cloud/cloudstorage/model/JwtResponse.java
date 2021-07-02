@@ -18,4 +18,5 @@ public class JwtResponse implements Serializable {
 
     @JsonProperty("auth-token")
     private String authToken;
+
 }
