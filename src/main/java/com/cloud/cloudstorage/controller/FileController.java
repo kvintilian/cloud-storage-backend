@@ -1,7 +1,9 @@
 package com.cloud.cloudstorage.controller;
 
+import com.cloud.cloudstorage.model.ErrorResponse;
 import com.cloud.cloudstorage.service.FileService;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping(value = "/cloud/file")
+@RequestMapping(value = "/file")
 public class FileController {
 
     private static final String FILE_NAME = "filename";
@@ -19,20 +22,24 @@ public class FileController {
 
     private final FileService fileService;
 
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
-
     @PostMapping()
     public ResponseEntity<?> postFile(@RequestParam(FILE_NAME) String filename,
                                       @RequestPart(FILE) @NotNull MultipartFile file) {
-        fileService.postFile(filename, file);
+        try {
+            fileService.postFile(filename, file);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), -32002));
+        }
         return ResponseEntity.ok().body(null);
     }
 
     @DeleteMapping()
     public ResponseEntity<?> deleteFile(@RequestParam(FILE_NAME) String filename) {
-        fileService.deleteFile(filename);
+        try {
+            fileService.deleteFile(filename);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), -32003));
+        }
         return ResponseEntity.ok().body(null);
     }
 

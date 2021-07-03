@@ -1,6 +1,7 @@
 package com.cloud.cloudstorage.controller;
 
 import com.cloud.cloudstorage.entity.FileEntity;
+import com.cloud.cloudstorage.service.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,14 +12,13 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/cloud/list")
+@RequestMapping(path = "/list")
 public class ListController {
+
+    private final FileService fileService;
 
     @GetMapping
     List<FileEntity> getList(@RequestParam int limit) {
-        return null;
-//        return locationService.getList(limit).stream()
-//                .map(boxFile -> new BoxFileDto(boxFile.getName(), boxFile.getSize()))
-//                .collect(Collectors.toList());
+        return fileService.getList(limit);
     }
 }
