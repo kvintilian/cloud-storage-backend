@@ -52,7 +52,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .headers().frameOptions().disable().and()
-                .authorizeRequests().antMatchers("/h2-console/**", "/cloud/login").permitAll()
+                .authorizeRequests().antMatchers("/h2-console/**", "/login").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

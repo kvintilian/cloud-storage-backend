@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/cloud")
 public class JwtAuthenticationController {
 
     private final AuthenticationManager authenticationManager;
