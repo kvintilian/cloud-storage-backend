@@ -47,7 +47,7 @@ public class FileService {
                 .size(file.getSize())
                 .filepath(getFilePath(filename).toAbsolutePath().toString())
                 .build();
-        storageService.save(file, filename, getFilePath(filename).toAbsolutePath());
+        storageService.save(file, getFilePath(filename).toAbsolutePath());
         fileRepository.save(fileEntity);
     }
 
@@ -57,8 +57,8 @@ public class FileService {
        fileRepository.removeFileByFilenameAndUserEntity(filename, getUserFromContext());
     }
 
-    public Resource getFile(String filename) {
-        return null;
+    public Resource getFile(String filename) throws IOException {
+        return storageService.loadFile(getFilePath(filename));
     }
 
     @Transactional

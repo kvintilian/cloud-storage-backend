@@ -44,12 +44,17 @@ public class FileController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getFile(@RequestParam(FILE_NAME) String filename) throws IOException {
-        Resource resource = fileService.getFile(filename);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + resource.getFilename() + "\"")
-                .contentLength(resource.getFile().length())
-                .body(resource);
+    public ResponseEntity<?> getFile(@RequestParam(FILE_NAME) String filename) {
+        Resource resource = null;
+        try {
+            resource = fileService.getFile(filename);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .contentLength(resource.getFile().length())
+                    .body(resource);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), -32004));
+        }
     }
 }
