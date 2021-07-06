@@ -22,7 +22,7 @@ class StorageServiceTest {
     public static final String FILE_TXT = "file.txt";
     public static final String TEST_STRING = "test string";
     public static final String NEW_FILE_NAME_TXT = "NewFileName.txt";
-    
+
     @Autowired
     StorageService storageService;
 

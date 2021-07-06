@@ -4,8 +4,11 @@ import com.cloud.cloudstorage.model.ErrorResponse;
 import com.cloud.cloudstorage.service.FileService;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +24,8 @@ public class FileController {
     private static final String FILE = "file";
 
     private final FileService fileService;
+
+    protected final Log logger = LogFactory.getLog(this.getClass());
 
     @PostMapping()
     public ResponseEntity<?> postFile(@RequestParam(FILE_NAME) String filename,
@@ -43,11 +48,12 @@ public class FileController {
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping()
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> getFile(@RequestParam(FILE_NAME) String filename) {
         Resource resource = null;
         try {
             resource = fileService.getFile(filename);
+            logger.warn("File size " + resource.getFile().length());
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION,
                             "attachment; filename=\"" + resource.getFilename() + "\"")

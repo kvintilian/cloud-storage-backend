@@ -1,7 +1,7 @@
 package com.cloud.cloudstorage.service;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +22,7 @@ public class StorageService {
     }
 
     public Resource loadFile(Path filepath) throws IOException {
-        Resource resource = new UrlResource(filepath.toUri());
+        Resource resource = new FileSystemResource(filepath);
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
