@@ -53,7 +53,7 @@ public class FileController {
         Resource resource = null;
         try {
             resource = fileService.getFile(filename);
-            logger.warn("File size " + resource.getFile().length());
+            logger.info("getFile.fileSize=" + resource.getFile().length());
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION,
                             "attachment; filename=\"" + resource.getFilename() + "\"")
