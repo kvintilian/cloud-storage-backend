@@ -20,4 +20,6 @@ public interface FileRepository extends JpaRepository<FileEntity, Long> {
 
     FileEntity findByFilenameAndUserEntity(String filename, UserEntity userEntity);
 
+//    void set
+
 }

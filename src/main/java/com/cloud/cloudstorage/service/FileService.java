@@ -64,7 +64,7 @@ public class FileService {
     @Transactional
     public List<FileEntity> getList(int limit) {
         UserEntity userEntity = getUserFromContext();
-//        return fileRepository.findAllByUserEntity(userEntity, PageRequest.of(0, limit));
+        // return fileRepository.findAllByUserEntity(userEntity, PageRequest.of(0, limit)); // not supported on the frontend
         return fileRepository.findAllByUserEntity_Login(userEntity.getLogin(), Sort.by("filename"));
     }
 
@@ -75,5 +75,12 @@ public class FileService {
 
     private Path getFilePath(String filename) {
         return rootLocation.resolve(getUserFromContext().getLogin()).resolve(filename);
+    }
+
+    public void renameFile(String filename, String newFileName) throws IOException {
+        storageService.renameFile(getFilePath(filename), newFileName, getUserFromContext());
+        FileEntity fileEntity = fileRepository.findByFilenameAndUserEntity(filename, getUserFromContext());
+//        fileEntity.setFilename();
+//        fileRepository.saveAndFlush();
     }
 }
