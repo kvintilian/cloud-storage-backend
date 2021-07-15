@@ -53,8 +53,8 @@ public class FileService {
 
     @Transactional
     public void deleteFile(String filename) throws IOException {
-       storageService.deleteFile(getFilePath(filename));
-       fileRepository.removeFileByFilenameAndUserEntity(filename, getUserFromContext());
+        storageService.deleteFile(getFilePath(filename));
+        fileRepository.removeFileByFilenameAndUserEntity(filename, getUserFromContext());
     }
 
     public Resource getFile(String filename) throws IOException {
@@ -78,9 +78,14 @@ public class FileService {
     }
 
     public void renameFile(String filename, String newFileName) throws IOException {
-        storageService.renameFile(getFilePath(filename), newFileName, getUserFromContext());
         FileEntity fileEntity = fileRepository.findByFilenameAndUserEntity(filename, getUserFromContext());
-//        fileEntity.setFilename();
-//        fileRepository.saveAndFlush();
+        String newFilePath = storageService.renameFile(getFilePath(filename), newFileName);
+        if (newFilePath != null) {
+            fileEntity.setFilename(newFileName);
+            fileEntity.setFilepath(newFilePath);
+            fileRepository.saveAndFlush(fileEntity);
+        } else {
+            throw new IOException(String.format("Error rename fille \"%s\" to \"%s\"", filename, newFileName));
+        }
     }
 }

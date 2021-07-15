@@ -1,8 +1,5 @@
 package com.cloud.cloudstorage.service;
 
-import com.cloud.cloudstorage.entity.FileEntity;
-import com.cloud.cloudstorage.entity.UserEntity;
-import com.cloud.cloudstorage.repository.FileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -19,8 +16,6 @@ import java.nio.file.Paths;
 @AllArgsConstructor
 public class StorageService {
 
-    private final FileRepository fileRepository;
-
     public void save(MultipartFile file, Path filepath) throws IOException {
         Files.createDirectories(filepath.getParent());
         Files.write(filepath, file.getBytes());
@@ -35,15 +30,16 @@ public class StorageService {
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
-            throw new IOException("File not load");
+            throw new IOException("File \"" + filepath + "\" not found/loaded");
         }
     }
 
-    public void renameFile(Path filePath, String newFileName, UserEntity userFromContext) {
-        FileEntity fileEntity = fileRepository.findByFilenameAndUserEntity(filePath.getFileName().toString(), userFromContext);
-        fileEntity.setFilename(newFileName);
+    public String renameFile(Path filePath, String newFileName) {
         File file = filePath.toFile();
-        File newFile = new File(filePath.resolve(Paths.get(newFileName)).toString());
-        file.renameTo(newFile);
+        File newFile = new File(filePath.resolveSibling(Paths.get(newFileName)).toString());
+        if (file.renameTo(newFile))
+            return newFile.getPath();
+        else
+            return null;
     }
 }

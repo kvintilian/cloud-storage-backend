@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,10 +69,15 @@ public class FileController {
     @PutMapping()
     public ResponseEntity<?> updateFile(@RequestParam(FILE_NAME) String filename, @RequestBody NewFileName newFileName) {
         try {
-            fileService.renameFile(filename, newFileName.getName());
+            fileService.renameFile(filename, newFileName.getFilename());
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), -32005));
         }
         return ResponseEntity.ok().body(null);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerErrors(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(e.getMessage(), 500));
     }
 }
