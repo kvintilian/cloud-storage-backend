@@ -14,5 +14,10 @@
       "name": "jwt.secret",
       "type": "java.lang.String",
       "description": "Description for jwt.secret."
+    },
+    {
+      "name": "origin.allowed",
+      "type": "java.lang.String",
+      "description": "Description for origin.allowed."
     }
   ] }
