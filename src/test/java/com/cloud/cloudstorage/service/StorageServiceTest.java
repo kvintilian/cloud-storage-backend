@@ -50,12 +50,12 @@ class StorageServiceTest {
         );
     }
 
-//    @Test
-//    void renameSuccess() throws IOException {
-//        File tempFile = createFile();
-//        storageService.renameFile(tempFile.toPath(), NEW_FILE_NAME_TXT);
-//        assertTrue(Files.exists(tempDir.resolve(NEW_FILE_NAME_TXT)));
-//    }
+    @Test
+    void renameSuccess() throws IOException {
+        File tempFile = createFile();
+        storageService.renameFile(tempFile.toPath(), NEW_FILE_NAME_TXT);
+        assertTrue(Files.exists(tempDir.resolve(NEW_FILE_NAME_TXT)));
+    }
 
     @Test
     void deleteSuccess() throws IOException {
