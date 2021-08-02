@@ -32,7 +32,7 @@ class StorageServiceTest {
     @Test
     void saveSuccess() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile(FILE_TXT, TEST_STRING.getBytes(StandardCharsets.UTF_8));
-        storageService.save(mockMultipartFile, tempDir.resolve(FILE_TXT));
+        storageService.save(mockMultipartFile.getBytes(), tempDir.resolve(FILE_TXT));
         assertAll(
                 () -> assertTrue(Files.exists(tempDir.resolve(FILE_TXT))),
                 () -> assertLinesMatch(Collections.singletonList(TEST_STRING), Files.readAllLines(tempDir.resolve(FILE_TXT)))

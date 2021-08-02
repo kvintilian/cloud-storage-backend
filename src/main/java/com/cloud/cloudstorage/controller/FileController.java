@@ -33,7 +33,7 @@ public class FileController {
     public ResponseEntity<?> postFile(@RequestParam(FILE_NAME) String filename,
                                       @RequestPart(FILE) @NotNull MultipartFile file) {
         try {
-            fileService.postFile(filename, file);
+            fileService.postFile(filename, file.getBytes(), file.getSize());
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), -32002));
         }

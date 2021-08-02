@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -40,14 +39,14 @@ public class FileService {
     }
 
     @Transactional
-    public void postFile(String filename, MultipartFile file) throws IOException {
+    public void postFile(String filename, byte[] fileBytes, long fileSize) throws IOException {
         FileEntity fileEntity = FileEntity.builder()
                 .filename(filename)
                 .userEntity(getUserFromContext())
-                .size(file.getSize())
+                .size(fileSize)
                 .filepath(getFilePath(filename).toAbsolutePath().toString())
                 .build();
-        storageService.save(file, getFilePath(filename).toAbsolutePath());
+        storageService.save(fileBytes, getFilePath(filename).toAbsolutePath());
         fileRepository.save(fileEntity);
     }
 
