@@ -61,7 +61,6 @@ public class FileService {
         return storageService.loadFile(getFilePath(filename));
     }
 
-    @Transactional
     public List<FileEntity> getList(int limit) {
         UserEntity userEntity = getUserFromContext();
         // return fileRepository.findAllByUserEntity(userEntity, PageRequest.of(0, limit)); // not supported on the frontend
